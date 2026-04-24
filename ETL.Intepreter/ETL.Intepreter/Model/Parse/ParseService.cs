@@ -30,13 +30,7 @@ namespace ETL.Intepreter.Model.Parse
                 var op = new BinaryOperation
                 {
                     Left = left,
-                    MyType = token.MyType == Token.Type.Plus
-                        ? BinaryOperation.Type.Addition
-                        : token.MyType == Token.Type.Minus
-                            ? BinaryOperation.Type.Substraction
-                            : token.MyType == Token.Type.Multiply
-                                ? BinaryOperation.Type.Multiplication
-                                : BinaryOperation.Type.Division
+                    MyType = MapTokenToType(token)
                 };
 
                 var right = ParsePrimary(tokens, ref index);
@@ -46,6 +40,17 @@ namespace ETL.Intepreter.Model.Parse
             }
 
             return left;
+        }
+
+        private static BinaryOperation.Type MapTokenToType(Token token)
+        {
+            return token.MyType == Token.Type.Plus
+                                    ? BinaryOperation.Type.Addition
+                                    : token.MyType == Token.Type.Minus
+                                        ? BinaryOperation.Type.Substraction
+                                        : token.MyType == Token.Type.Multiply
+                                            ? BinaryOperation.Type.Multiplication
+                                            : BinaryOperation.Type.Division;
         }
 
         private static IElement ParsePrimary(IReadOnlyList<Token> tokens, ref int index)
